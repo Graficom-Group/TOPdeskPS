@@ -78,6 +78,10 @@
         Email of the caller.
         Can only be set by operators
 
+    .PARAMETER CallerId
+        ID of the caller.
+        Can only be set by operators
+
     .PARAMETER ClosureCode
         Closure code by id or name.
         Can only be set by operators.
@@ -220,6 +224,9 @@ Cannot be filled in if the incident has a supplier service linked.
         $CallerEmail,
 
         [string]
+        $CallerId,
+
+        [string]
         $EntryType,
 
         [string]
@@ -335,6 +342,10 @@ Cannot be filled in if the incident has a supplier service linked.
             }
             CallerEmail {
                 $CallerLookup = @{ 'email' = $CallerEmail }
+                $Body | Add-Member -MemberType NoteProperty -Name 'callerLookup' -Value $CallerLookup
+            }
+            CallerId {
+                $CallerLookup = @{ 'id' = $CallerId }
                 $Body | Add-Member -MemberType NoteProperty -Name 'callerLookup' -Value $CallerLookup
             }
             ClosureCode {
