@@ -159,6 +159,9 @@ Cannot be filled in if the incident has a supplier service linked.
 Can only be set by operators.
 Cannot be filled in if the incident has a supplier service linked.
 
+    .PARAMETER Sla
+    set SLA id to ticket
+
     .PARAMETER OnHold
     sets the ticket to onhold.
     Can only be set by operators.
@@ -286,6 +289,9 @@ Cannot be filled in if the incident has a supplier service linked.
 
         [datetime]
         $TargetDate,
+
+        [string]
+        $Sla,
 
         [switch]
         $OnHold,
@@ -442,6 +448,10 @@ Cannot be filled in if the incident has a supplier service linked.
             TargetDate {
                 $d = Get-Date $TargetDate -UFormat "%Y-%m-%dT%H:%M:%S.000%Z00"
                 $Body | Add-Member -MemberType NoteProperty -Name targetDate -Value $d
+            }
+            Sla {
+                $val = @{ id = $Sla }
+                $body | Add-Member -MemberType NoteProperty -name object -Value $val
             }
 
             OnHold {
