@@ -20,29 +20,22 @@ function Get-TdSLA {
         $Nummmer = 'SLA',
 
         [String]
-        $Omschrijving = '',
-
-        [String]
-        $Username,
-
-        [String]
-        $Password,
-
-        [String]
-        $SQLServer,
-
-        [String]
-        $SQLDatabase
+        $Omschrijving = ''
 
     )
     try{
+
+        $SQLServer = Get-PSFConfigValue -FullName TOPdeskPS.SQLserver -NotNull
+        $SQLDatabase = Get-PSFConfigValue -FullName TOPdeskPS.SQLdatabase -NotNull
+        $SQLcredentials = Get-PSFConfigValue -FullName TOPdeskPS.SQLcredentials -NotNull
+
         $query = "SELECT Naam as nummer, omschrijving, unid AS id, aanvangsdatum, einddatum FROM $SQLDatabase.dbo.dnocontract WHERE naam like '%$($Nummer)%' AND omschrijving like '%$($Omschrijving)%'"
-        $res = Invoke-Sqlcmd -ServerInstance $SQLServer -Database $SQLDatabase -Query $query -Username $Username -Password $Password -Verbose
+        $res = Invoke-Sqlcmd -ServerInstance $SQLServer -Database $SQLDatabase -Query $query -Username $SQLcredentials.username -Password $SQLcredentials.GetNetworkCredential().password -Verbose
         $res
 
     }
     catch{
-
+        throw 'You have created a connection with the SQL database of TOPdesk, please use "Connect-TdServiceSql" to create a secure SQL connection with the database'
     }
 
 }
