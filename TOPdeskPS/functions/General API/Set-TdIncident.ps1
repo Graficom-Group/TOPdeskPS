@@ -296,6 +296,12 @@ Cannot be filled in if the incident has a supplier service linked.
         [switch]
         $OnHold,
 
+        [int]
+        $feedbackRating,`
+
+        [string]
+        $feedbackMessage,
+
         [switch]
         $MajorCall,
 
@@ -456,6 +462,14 @@ Cannot be filled in if the incident has a supplier service linked.
 
             OnHold {
                 $body | Add-Member -MemberType NoteProperty -name onHold -Value ($OnHold.tostring().tolower())
+            }
+
+            feedbackRating {
+                $body | Add-Member -MemberType NoteProperty -name feedbackRating -Value $feedbackRating
+            }
+
+            feedbackMessage {
+                $body | Add-Member -MemberType NoteProperty -name feedbackMessage -Value $feedbackMessage
             }
 
             MajorCall {
